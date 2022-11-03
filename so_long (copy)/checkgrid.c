@@ -6,7 +6,7 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 10:22:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/03 10:46:25 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/03 11:18:58 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -490,7 +490,7 @@ int checkgrid_start(t_map *map)
 		int x;
 		int y;
 
-		count == 0;
+		count = 0;
 		y = 0;
 		while (map->grid[y])
 		{
@@ -550,25 +550,68 @@ int checkgrid_start(t_map *map)
 		return(gridcpy);
 	}
 
+int search(int x, int y, char **grid)
+{
+	if (grid[y][x] == 'E') 
+		return (1);
+	if (grid[y][x] == '0' || grid[y][x] == 'C' || grid[y][x] == 'P')
+	{
+		grid[y][x] = 'x';
+		if (search(x - 1, y, grid))
+		{	
+			grid[y][x] = 'x';
+			return (1);
+		}
+		if (search(x, y + 1, grid))
+		{	
+			grid[y][x] = 'x';
+			return (1);
+		}
+		if (search(x + 1, y, grid))
+		{	
+			grid[y][x] = 'x';
+			return (1);
+		}	
+		if (search(x, y - 1, grid))
+		{	
+			grid[y][x] = 'x';
+			return (1);
+		}
+	}
+	return (0);
+}
+
 	int dfs(t_map *map)
 	{
 		char **gridcpy;
-	
+		int result;
+
+		result = 0;
 		gridcpy = copygrid(map);
-		print_grid(gridcpy);
-		return(1);
+		result = search(map->start_pos.x, map->start_pos.y, gridcpy);
+		/*print_grid(gridcpy);*/
+		free_grid(gridcpy);
+		if (result == 1)
+			return (1);
+		return(-1);
 	}
 
 	int checkgrid(t_map *map)
 	{
-		int test;
-		test = checkgrid_dimensions(map);
-		test = checkgrid_wall_rows(map);
-		test = checkgrid_wall_colls(map);
-		test = checkgrid_start(map);
-		test = checkgrid_exit(map);
-		test = checkgrid_collects(map);
-		test = dfs(map);
+		int checksum;
+		
+		checksum = 0;
+		checksum += checkgrid_dimensions(map);
+		checksum += checkgrid_wall_rows(map);
+		checksum +=checkgrid_wall_colls(map);
+		checksum += checkgrid_start(map);
+		checksum += checkgrid_exit(map);
+		checksum += checkgrid_collects(map);
+		checksum += dfs(map);
+		if (checksum == 7)
+			return (1);
+		return (0);
+		
 	}
 
 	int main()
