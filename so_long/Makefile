@@ -1,8 +1,9 @@
-SRCS	=	checkgrid.c
+SRCS	=	checkgrid.c renderstuff.c
 OBJS	=	${SRCS:.c=.o}
 RM		=	rm -f
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror -g
+DFLAGS    =    -L./minilibx-linux -lmlx -lXext -lX11 -lm
 NAME	=	so_long.a
 MAKELIB	=	cd libft && make
 
@@ -24,7 +25,8 @@ fclean: clean
 re: fclean all
 
 test: ${NAME}
-	${CC} ${CFLAGS} checkgrid.c ${NAME} -lbsd
+	${CC} checkgrid.c ${CFLAGS} ${NAME} ${DFLAGS} -lbsd
+	./a.out map.ber
 
 	
 .PHONY: all clean fclean re so_long

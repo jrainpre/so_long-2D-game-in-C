@@ -6,7 +6,7 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 10:22:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/03 17:32:03 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/07 15:39:09 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,6 +354,11 @@ int	main(void)
 	ft_strlen("sadfgasdf");
 	get_grid(&map, "map.ber");
 	print_grid(map.grid);
-	checkgrid(&map, "p.ber");
+	checkgrid(&map, "map.ber");
+
+	open_window(&map);
+	render_graphics(&map);
+	put_map(&map);
+	
 	free_grid(map.grid);
 }
