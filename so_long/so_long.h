@@ -6,7 +6,7 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 09:00:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/07 15:36:21 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:48:43 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_graphics
 	void	*start;
 	void	*exit;
 	void	*collec;
+	void	*player;
 }t_graphics;
 
 typedef struct s_map
@@ -48,7 +49,8 @@ typedef struct s_map
 	int		dim_x;
 	int		dim_y;
 	int		collect_count;
-	t_pos	start_pos;
+	int		collect_act;
+	t_pos	player;
 	t_win	window; 
 	t_graphics graphics;
  }t_map;
@@ -75,17 +77,21 @@ int	checkgrid_solutions(t_map *map);
 #include "minilibx-linux/mlx.h"
 #include "minilibx-linux/mlx_int.h"
 
-#define WALL "baum3.xpm"
-#define PATH "floor1.xpm"
-#define START "flower_light.xpm"
-#define END "exit80.xpm"
-#define COLLECTS "star.xpm"
-#define OFFSET 80
+#define WALL "wall.xpm"
+#define PATH "path.xpm"
+#define START "player.xpm"
+#define END "exit.xpm"
+#define COLLECTS "collect.xpm"
+#define PLAYER "player.xpm"
+#define OFFSET 50
 
 void	open_window(t_map *map);
 void	render_graphics(t_map *map);
 void	*check_graphic(t_map *map, int x, int y);
 void	put_map(t_map *map);
+int		key_hook(int key, t_map *map);
+void control_player(int key, t_map *map);
+int new_pos(int next_y, int next_x, t_map *map);
 
 
 #endif

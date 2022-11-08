@@ -6,7 +6,7 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 10:22:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/07 15:39:09 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:41:03 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,8 +209,8 @@ int	checkgrid_start(t_map *map)
 			if (map->grid[y][x] == 'P')
 			{
 				count++;
-				map->start_pos.x = x;
-				map->start_pos.y = y;
+				map->player.x = x;
+				map->player.y = y;
 			}
 			x++;
 		}
@@ -310,7 +310,7 @@ int	checkgrid_soluitions(t_map *map)
 
 	result = 0;
 	gridcpy = copygrid(map);
-	result = search(map->start_pos.x, map->start_pos.y, gridcpy);
+	result = search(map->player.x, map->player.y, gridcpy);
 	print_grid(gridcpy);
 	free_grid(gridcpy);
 	if (result == 1)
@@ -359,6 +359,9 @@ int	main(void)
 	open_window(&map);
 	render_graphics(&map);
 	put_map(&map);
+	mlx_key_hook(map.window.win, key_hook, &map);
+
+	mlx_loop(map.window.mlx);
 	
 	free_grid(map.grid);
 }
