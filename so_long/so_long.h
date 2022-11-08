@@ -6,7 +6,7 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 09:00:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/08 11:48:43 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/08 15:29:05 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_map
 	int		dim_y;
 	int		collect_count;
 	int		collect_act;
+	int		move_count;
 	t_pos	player;
 	t_win	window; 
 	t_graphics graphics;
@@ -90,8 +91,10 @@ void	render_graphics(t_map *map);
 void	*check_graphic(t_map *map, int x, int y);
 void	put_map(t_map *map);
 int		key_hook(int key, t_map *map);
-void control_player(int key, t_map *map);
-int new_pos(int next_y, int next_x, t_map *map);
+void 	control_player(int key, t_map *map);
+int 	new_pos(int next_y, int next_x, t_map *map);
+void	free_exit(t_map *map);
+void	evaluate(t_map *map);
 
 
 #endif

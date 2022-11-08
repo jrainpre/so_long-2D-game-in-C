@@ -6,21 +6,14 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 10:22:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/08 13:46:25 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/08 15:34:29 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-// 65361 links
-// 65363 rechts
-// 65362 oben 
-// 65364 unten
 
 #include "so_long.h"
 
 int key_hook(int key, t_map *map)
 {
-    ft_printf("%d\n", key);
 	control_player(key, map);
     if (key == 65307)
     {
@@ -34,12 +27,18 @@ int new_pos(int next_y, int next_x, t_map *map)
 {
 	if (map->grid[next_y][next_x] == '1')
 		return (0);
+	if (map->grid[next_y][next_x] == 'E')
+	{
+		ft_printf("You moved %d times.\n", ++map->move_count);
+		evaluate(map);
+	}
 	if (map->grid[next_y][next_x] == 'C')
 			map->collect_act++;
 	map->grid[map->player.y][map->player.x] = '0';
 	map->player.x = next_x;
 	map->player.y = next_y;
 	map->grid[map->player.y][map->player.x] = 'P';
+	ft_printf("You moved %d times.\n", ++map->move_count);
 	return(1);
 }
 
@@ -65,7 +64,8 @@ void	open_window(t_map *map)
 {
 		map->window.mlx = mlx_init();
 		map->window.win = mlx_new_window(map->window.mlx, map->dim_x * OFFSET, map->dim_y * OFFSET, "so_long");
-}
+		map->move_count = 0;
+}		
 
 void	render_graphics(t_map *map)
 {

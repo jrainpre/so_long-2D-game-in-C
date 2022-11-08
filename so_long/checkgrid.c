@@ -6,7 +6,7 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 10:22:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/08 13:41:03 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/08 15:20:05 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,6 +327,22 @@ int	error_msg_map(char *msg, t_map *map)
 	return (0);
 }
 
+void	evaluate(t_map *map)
+{
+	if (map->collect_act == map->collect_count)
+		ft_printf("You won!");
+	else
+		ft_printf("You lost!");
+	mlx_destroy_window(map->window.mlx, map->window.win);
+	free_exit(map);	
+}
+
+void	free_exit(t_map *map)
+{
+	free_grid(map->grid);
+	exit(0);
+}
+
 void	checkgrid(t_map *map, char *filename)
 {
 	if(!checkgrid_filename(filename))
@@ -362,6 +378,6 @@ int	main(void)
 	mlx_key_hook(map.window.win, key_hook, &map);
 
 	mlx_loop(map.window.mlx);
-	
+
 	free_grid(map.grid);
 }
