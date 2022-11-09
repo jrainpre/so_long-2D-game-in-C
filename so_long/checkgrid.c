@@ -6,7 +6,7 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 10:22:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/08 15:20:05 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:27:00 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,12 @@ void	free_grid(char **grid)
 		free(grid);
 }
 
-int checkgrid_filename(char *filename)
+int	checkgrid_filename(char *filename)
 {
-    size_t length_xend;
+	size_t	length_xend;
 
-    length_xend = ft_strlen(filename) - 4;
-    if(ft_strncmp(&filename[length_xend], ".ber", 4) != 0)
+	length_xend = ft_strlen(filename) - 4;
+	if (ft_strncmp(&filename[length_xend], ".ber", 4) != 0)
 		return (0);
 	return (1);
 }
@@ -268,6 +268,30 @@ int	checkgrid_collects(t_map *map)
 	return (0);
 }
 
+int	checkgrid_chars(t_map *map)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (map->grid[y])
+	{
+		x = 0;
+		while (map->grid[y][x])
+		{
+			if (!(map->grid[y][x] == '1' || \
+					map->grid[y][x] == '0' || \
+					map->grid[y][x] == 'P' || \
+					map->grid[y][x] == 'E' || \
+					map->grid[y][x] == 'S'))
+				return (0);
+			x++;
+		}
+		y++;
+	}
+	return (1);
+}
+
 char	**copygrid(t_map *map)
 {
 	char	**gridcpy;
@@ -293,7 +317,7 @@ int	search(int x, int y, char **grid)
 	if (grid[y][x] == '0' || grid[y][x] == 'C' || grid[y][x] == 'P')
 	{
 		grid[y][x] = 'x';
-		if (search(x - 1, y, grid) || search(x, y + 1, grid) ||
+		if (search(x - 1, y, grid) || search(x, y + 1, grid) || \
 			search(x + 1, y, grid) || search(x, y - 1, grid))
 		{
 			grid[y][x] = 'x';
@@ -333,51 +357,51 @@ void	evaluate(t_map *map)
 		ft_printf("You won!");
 	else
 		ft_printf("You lost!");
-	mlx_destroy_window(map->window.mlx, map->window.win);
-	free_exit(map);	
+	free_exit(map);
 }
 
-void	free_exit(t_map *map)
+int	free_exit(t_map *map)
 {
+	mlx_destroy_window(map->win.mlx, map->win.win);
 	free_grid(map->grid);
 	exit(0);
+	return (0);
 }
 
 void	checkgrid(t_map *map, char *filename)
 {
-	if(!checkgrid_filename(filename))
-		error_msg_map("Filename not correct. Please check filename.", map);
-	if(!checkgrid_dimensions(map))
-		error_msg_map("Dimensions are not ok. Please check map", map);
-	if(!checkgrid_wall_rows(map))
-		error_msg_map("Map is not surrounded by walls. Please check the map.", map);
-	if(!checkgrid_wall_colls(map))
-			error_msg_map("Map is not surrounded by walls. Please check the map.", map);
-	if(!checkgrid_start(map))
-			error_msg_map("The map has more then one or no start position. Please check the map.", map);
-	if(!checkgrid_exit(map))
-			error_msg_map("There is no or more then one exit. Please check the map.", map);
-	if(!checkgrid_collects(map))
-		error_msg_map("Map is not surrounded by walls. Please check the map.", map);
-	if(!checkgrid_soluitions(map))
-		error_msg_map("The input map is not sloveable. Please check the map.", map);
+	if (!checkgrid_filename(filename))
+		error_msg_map(ERR_FILE, map);
+	if (!checkgrid_dimensions(map))
+		error_msg_map(ERR_DIM, map);
+	if (!checkgrid_wall_rows(map))
+		error_msg_map(ERR_WALL, map);
+	if (!checkgrid_wall_colls(map))
+		error_msg_map(ERR_WALL, map);
+	if (!checkgrid_start(map))
+		error_msg_map(ERR_START, map);
+	if (!checkgrid_exit(map))
+		error_msg_map(ERR_EXIT, map);
+	if (!checkgrid_collects(map))
+		error_msg_map(ERR_COLL, map);
+	if (!checkgrid_soluitions(map))
+		error_msg_map(ERR_SOL, map);
+	if (!checkgrid_chars(map))
+		error_msg_map(ERR_CHAR, map);
 }
 
 int	main(void)
 {
 	t_map	map;
 
-	ft_strlen("sadfgasdf");
 	get_grid(&map, "map.ber");
 	print_grid(map.grid);
 	checkgrid(&map, "map.ber");
-
 	open_window(&map);
 	render_graphics(&map);
 	put_map(&map);
-	mlx_key_hook(map.window.win, key_hook, &map);
-
-	mlx_loop(map.window.mlx);
-
+	mlx_key_hook(map.win.win, key_hook, &map);
+	mlx_hook(map.win.win, 17, 0, free_exit, &map);
+	mlx_loop(map.win.mlx);
 	free_grid(map.grid);
 }

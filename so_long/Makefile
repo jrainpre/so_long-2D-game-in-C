@@ -28,6 +28,15 @@ test: ${NAME}
 	${CC} checkgrid.c ${CFLAGS} ${NAME} ${DFLAGS} -lbsd
 	./a.out map.ber
 
+
+val: all
+	valgrind --leak-check=full \
+		--show-leak-kinds=all \
+		--track-origins=yes \
+		--verbose \
+		--log-file=valgrind-out.txt \
+		./a.out map.ber
+
 	
 .PHONY: all clean fclean re so_long
 	./a.out 

@@ -6,7 +6,7 @@
 /*   By: jrainpre <jrainpre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 09:00:59 by jrainpre          #+#    #+#             */
-/*   Updated: 2022/11/08 15:29:05 by jrainpre         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:27:48 by jrainpre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define ERR_MSG "The provided map is invalid!"
+
 typedef struct s_window
 {
 	void	*mlx;
@@ -52,7 +52,7 @@ typedef struct s_map
 	int		collect_act;
 	int		move_count;
 	t_pos	player;
-	t_win	window; 
+	t_win	win; 
 	t_graphics graphics;
  }t_map;
 
@@ -77,14 +77,23 @@ int	checkgrid_solutions(t_map *map);
 
 #include "minilibx-linux/mlx.h"
 #include "minilibx-linux/mlx_int.h"
-
+#define ERR_MAP "The provided map is invalid!"
+#define ERR_FILE "Filename not correct. Please check filename."
+#define ERR_DIM "Dimensions are not ok. Please check map"
+#define ERR_WALL "Map is not surrounded by walls. Please check the map."
+#define ERR_START "The map has more then one or no start position."
+#define ERR_COLL "There is no collectable on the map. Please check the map."
+#define ERR_SOL "The input map is not sloveable. Please check the map."
+#define ERR_EXIT "There is no or more then one exit. Please check the map."
+#define ERR_CHAR "There are undefined characters on the map."
 #define WALL "wall.xpm"
 #define PATH "path.xpm"
 #define START "player.xpm"
 #define END "exit.xpm"
-#define COLLECTS "collect.xpm"
+#define COLLECT "collect.xpm"
 #define PLAYER "player.xpm"
 #define OFFSET 50
+#define WINDO map->win.mlx, map->dim_x * OFFSET, map->dim_y * OFFSET, "so_long"
 
 void	open_window(t_map *map);
 void	render_graphics(t_map *map);
@@ -93,7 +102,7 @@ void	put_map(t_map *map);
 int		key_hook(int key, t_map *map);
 void 	control_player(int key, t_map *map);
 int 	new_pos(int next_y, int next_x, t_map *map);
-void	free_exit(t_map *map);
+int		free_exit(t_map *map);
 void	evaluate(t_map *map);
 
 
