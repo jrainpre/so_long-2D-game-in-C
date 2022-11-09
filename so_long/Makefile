@@ -1,4 +1,4 @@
-SRCS	=	checkgrid.c renderstuff.c
+SRCS	=	player_control.c window_utils.c get_map.c checkgrid1.c checkgrid2.c grid_utils.c search_solutions.c main.c
 OBJS	=	${SRCS:.c=.o}
 RM		=	rm -f
 CC		=	cc
@@ -25,7 +25,7 @@ fclean: clean
 re: fclean all
 
 test: ${NAME}
-	${CC} checkgrid.c ${CFLAGS} ${NAME} ${DFLAGS} -lbsd
+	${CC} main.c ${CFLAGS} ${NAME} ${DFLAGS} -lbsd
 	./a.out map.ber
 
 
