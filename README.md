@@ -17,7 +17,6 @@ In "So Long", you'll navigate a 2D environment with the following gameplay mecha
 - **Graphics**: The game will be rendered in a window, ensuring a smooth gaming experience.
 - **Map Configuration**: Maps are built using walls, collectibles, and free spaces, offering various challenges as you navigate through.
 
-Remember, while the provided examples showcase a dolphin-themed environment, the game world is only limited by your imagination.
 <div align='center'>
 <img src="https://github.com/jrainpre/so_long/blob/master/Screenshots/Game.png" alt="Game Screenshot">
 </div>
@@ -44,7 +43,7 @@ make
 ### Execution
 Run the game by passing a `.ber` map description file as an argument.
 ```bash
-./so_long mpas/your_map.ber
+./so_long maps/your_map.ber
 ```
 
 Remember to replace placeholders (like `YourGithubUsername`, `ContributorOne`, `path_to_screenshot1.png`, etc.) with actual values as needed.
